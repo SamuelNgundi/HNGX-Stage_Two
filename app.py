@@ -57,6 +57,7 @@ def add_person():
     return jsonify({"Message": "Created new person"})
 
 
+# Configure method for GET
 
 @app.route('/api', methods=['GET'])
 def get_person():
@@ -65,12 +66,15 @@ def get_person():
     persons = persons_schema.dump(data)
     return jsonify(persons)
 
+# Configure method for GET to get a person by their id
 
 @app.route('/api/user_id/<id>', methods=['GET'])
 def person_byid(id):
     person = Person.query.get(id)
     data = person_schema.dump(person)
     return jsonify(data)
+
+# Configure method for POST to delete details of a person by their ID
 
 @app.route('/api/user_id/<id>', methods=['POST'])
 def delete_person(id):
@@ -81,11 +85,13 @@ def delete_person(id):
     db.session.commit()
     return jsonify({"Message": "this person has been deleted"})
 
+# Configure method for POST to edit details of a person by their ID
+
 @app.route('/api/user_id/<id>', methods=['POST'])
 def edit_person(id):
     person = Person.query.get(id)
     if person is None:
-        return jsonify ({"Error": "this prodcut doesn't exist"})
+        return jsonify ({"Error": "this person doesn't exist"})
     _json = request.json
     person.name = _json['name']
     person.age =_json['age']
