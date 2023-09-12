@@ -15,10 +15,10 @@ mysql = MySQL(app)
 
 #Create a model for our table
 
-class person(db.Model):
+class Person(db.Model):
     id= db.Column(db.Integer, primary_key=True)
     name= db.Column(db.String(15), nullable=False)
-    age= db.Column(db.Float, nullable=False)
+    age= db.Column(db.Integer, nullable=False)
     email= db.Column(db.String(15), nullable=False)
 
 
@@ -51,47 +51,47 @@ def add_person():
     name = _json['name']
     age = _json['age']
     email = _json['email']
-    new_person = person(name=name, age=age, email=email)
+    new_person = Person(name=name, age=age, email=email)
     db.session.add(new_person)
     db.session.commit()
-    return jsonify({"message": "this person has been added "})
+    return jsonify({"Message": "Created new person"})
 
 
 
 @app.route('/api', methods=['GET'])
 def get_person():
     persons = []
-    data = person.query.all()
+    data = Person.query.all()
     persons = persons_schema.dump(data)
     return jsonify(persons)
 
 
-@app.route('/api/user_id', methods=['GET'])
+@app.route('/api/user_id/<id>', methods=['GET'])
 def person_byid(id):
-    person = person.query.get(id)
+    person = Person.query.get(id)
     data = person_schema.dump(person)
     return jsonify(data)
 
-@app.route('/api/user_id', methods=['POST'])
+@app.route('/api/user_id/<id>', methods=['POST'])
 def delete_person(id):
-    person = person.query.get(id)
+    person = Person.query.get(id)
     if person is None:
         return jsonify(f"Error: this person doesn't exist")
     db.session.delete(person)
     db.session.commit()
-    return jsonify({"message": "this person has been deleted"})
+    return jsonify({"Message": "this person has been deleted"})
 
-@app.route('/api/user_id', methods=['POST'])
+@app.route('/api/user_id/<id>', methods=['POST'])
 def edit_person(id):
-    person = person.query.get(id)
+    person = Person.query.get(id)
     if person is None:
-        return jsonify ({"error": "this prodcut doesn't exist"})
+        return jsonify ({"Error": "this prodcut doesn't exist"})
     _json = request.json
     person.name = _json['name']
     person.age =_json['age']
     person.email= _json['email']
     db.session.commit()
-    return jsonify({"message": "this person has been edited"})
+    return jsonify({"Message": "this person has been edited"})
 
 if __name__ == "__main__":
     app.run(debug=True)
