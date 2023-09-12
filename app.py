@@ -44,6 +44,7 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
 
+# Configure method for pOST to Create a person
 
 @app.route('/api', methods=['POST'])
 def add_person():
@@ -74,20 +75,9 @@ def person_byid(id):
     data = person_schema.dump(person)
     return jsonify(data)
 
-# Configure method for POST to delete details of a person by their ID
+# Configure method for PUT to edit details of a person by their ID
 
-@app.route('/api/user_id/<id>', methods=['POST'])
-def delete_person(id):
-    person = Person.query.get(id)
-    if person is None:
-        return jsonify(f"Error: this person doesn't exist")
-    db.session.delete(person)
-    db.session.commit()
-    return jsonify({"Message": "this person has been deleted"})
-
-# Configure method for POST to edit details of a person by their ID
-
-@app.route('/api/user_id/<id>', methods=['POST'])
+@app.route('/api/user_id/<id>', methods=['PUT'])
 def edit_person(id):
     person = Person.query.get(id)
     if person is None:
@@ -98,6 +88,18 @@ def edit_person(id):
     person.email= _json['email']
     db.session.commit()
     return jsonify({"Message": "this person has been edited"})
+
+# Configure method for DELETE to delete details of a person by their ID
+
+@app.route('/api/user_id/<id>', methods=['DELETE'])
+def delete_person(id):
+    person = Person.query.get(id)
+    if person is None:
+        return jsonify(f"Error: this person doesn't exist")
+    db.session.delete(person)
+    db.session.commit()
+    return jsonify({"Message": "this person has been deleted"})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
