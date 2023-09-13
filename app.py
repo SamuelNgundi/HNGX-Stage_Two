@@ -50,12 +50,17 @@ with app.app_context():
 def add_person():
     _json = request.json
     name = _json['name']
+    if not isinstance(name, str):
+            return jsonify({"Error": "Name must be a string"}), 400
+    existing_person = Person.query.filter_by(name=name).first()
+    if existing_person:
+            return jsonify({"Error": "Name is already registered"}), 400
     age = _json['age']
     email = _json['email']
     new_person = Person(name=name, age=age, email=email)
     db.session.add(new_person)
     db.session.commit()
-    return jsonify({"Message": "Created new person"})
+    return jsonify({"Message": "Created new person"}), 201
 
 
 # Configure method for GET
@@ -84,6 +89,9 @@ def edit_person(user_id):
         return jsonify ({"Error": "this person doesn't exist"})
     _json = request.json
     person.name = _json['name']
+    new_name = _json['name']
+    if not isinstance(new_name, str):
+            return jsonify({"Error": "Name must be a string"}), 400
     person.age =_json['age']
     person.email= _json['email']
     db.session.commit()
