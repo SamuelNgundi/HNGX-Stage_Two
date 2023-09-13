@@ -17,9 +17,9 @@ mysql = MySQL(app)
 
 class Person(db.Model):
     id= db.Column(db.Integer, primary_key=True)
-    name= db.Column(db.String(15), nullable=False)
+    name= db.Column(db.String(130), nullable=False)
     age= db.Column(db.Integer, nullable=False)
-    email= db.Column(db.String(15), nullable=False)
+    email= db.Column(db.String(130), unique=True, nullable=False)
 
 
     def __init__(self, name, age, email) :
@@ -36,7 +36,7 @@ person_schema = PersonSchema()
 persons_schema = PersonSchema(many=True)
 
 ##MYSQL
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/person'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://samuelwngundi:python2023@samuelwngundi.mysql.pythonanywhere-services.com/samuelwngundi$person'
 
 ##SQLITE
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
@@ -69,17 +69,17 @@ def get_person():
 
 # Configure method for GET to get a person by their id
 
-@app.route('/api/user_id/<id>', methods=['GET'])
-def person_byid(id):
-    person = Person.query.get(id)
+@app.route('/api/<int:user_id>', methods=['GET'])
+def person_byid(user_id):
+    person = Person.query.get(user_id)
     data = person_schema.dump(person)
     return jsonify(data)
 
 # Configure method for PUT to edit details of a person by their ID
 
-@app.route('/api/user_id/<id>', methods=['PUT'])
-def edit_person(id):
-    person = Person.query.get(id)
+@app.route('/api/<int:user_id>', methods=['PUT'])
+def edit_person(user_id):
+    person = Person.query.get(user_id)
     if person is None:
         return jsonify ({"Error": "this person doesn't exist"})
     _json = request.json
@@ -91,9 +91,9 @@ def edit_person(id):
 
 # Configure method for DELETE to delete details of a person by their ID
 
-@app.route('/api/user_id/<id>', methods=['DELETE'])
-def delete_person(id):
-    person = Person.query.get(id)
+@app.route('/api/<int:user_id>', methods=['DELETE'])
+def delete_person(user_id):
+    person = Person.query.get(user_id)
     if person is None:
         return jsonify(f"Error: this person doesn't exist")
     db.session.delete(person)
