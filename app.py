@@ -86,7 +86,7 @@ def person_byid(user_id):
 def edit_person(user_id):
     person = Person.query.get(user_id)
     if person is None:
-        return jsonify ({"Error": "this person doesn't exist"})
+        return jsonify ({"Error": "this person doesn't exist"}), 404
     _json = request.json
     person.name = _json['name']
     new_name = _json['name']
@@ -103,7 +103,7 @@ def edit_person(user_id):
 def delete_person(user_id):
     person = Person.query.get(user_id)
     if person is None:
-        return jsonify(f"Error: this person doesn't exist")
+        return jsonify(f"Error: this person doesn't exist"), 404
     db.session.delete(person)
     db.session.commit()
     return jsonify({"Message": "this person has been deleted"})
