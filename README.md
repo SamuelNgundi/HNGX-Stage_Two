@@ -42,7 +42,7 @@ pip install -r requirements.txt
 python app.py
 ```
 
-The API should now be running locally at 
+The API will run locally on 
 ```bash
 http://localhost:5000/api/
 ```
