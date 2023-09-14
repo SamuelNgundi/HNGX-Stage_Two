@@ -18,25 +18,22 @@ mysql = MySQL(app)
 class Person(db.Model):
     id= db.Column(db.Integer, primary_key=True)
     name= db.Column(db.String(130), nullable=False)
-    age= db.Column(db.Integer, nullable=False)
-    email= db.Column(db.String(130), unique=True, nullable=False)
 
 
-    def __init__(self, name, age, email) :
+    def __init__(self, name) :
         self.name=name
-        self.age=age
-        self.email=email
+
     
 class PersonSchema(ma.Schema):
     class Meta:
-        fields = ('id','name', 'age', 'email')
+        fields = ('id','name')
 
 
 person_schema = PersonSchema()
 persons_schema = PersonSchema(many=True)
 
 ##MYSQL
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://samuelwngundi:python2023@samuelwngundi.mysql.pythonanywhere-services.com/samuelwngundi$person'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost/person'
 
 ##SQLITE
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///Database.db'
@@ -55,9 +52,7 @@ def add_person():
     existing_person = Person.query.filter_by(name=name).first()
     if existing_person:
             return jsonify({"Error": "Name is already registered"}), 400
-    age = _json['age']
-    email = _json['email']
-    new_person = Person(name=name, age=age, email=email)
+    new_person = Person(name=name)
     db.session.add(new_person)
     db.session.commit()
     return jsonify({"Message": "Created new person"}), 201
@@ -92,8 +87,6 @@ def edit_person(user_id):
     new_name = _json['name']
     if not isinstance(new_name, str):
             return jsonify({"Error": "Name must be a string"}), 400
-    person.age =_json['age']
-    person.email= _json['email']
     db.session.commit()
     return jsonify({"Message": "this person has been edited"})
 

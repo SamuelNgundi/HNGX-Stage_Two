@@ -4,22 +4,53 @@ You are to build a simple REST API capable of CRUD operations on a "person" reso
 Your API should be flexible enough to handle dynamic input. If we provide a name (or other details), your backend should be able to process operations using that name.
 Name field should only be strings; integers or any other data type should not be allowed.
 
-### Introduction
+## Introduction
 This api was built using Flask. It relies on MySQL database to store and retrieve data.
-### Usage
-* The api is hosted on pythonanywhere and can be accessed at: https://samuelwngundi.pythonanywhere.com/api
-* The endpoint to get a list of all people in the database is at: https://samuelwngundi.pythonanywhere.com/api
-### API Endpoints
-| HTTP Verbs | Endpoints | Action |
-| --- | --- | --- |
-| POST | https://samuelwngundi.pythonanywhere.com/api | To create a new person |
-| GET | https://samuelwngundi.pythonanywhere.com/api | To retrieve all data from the database |
-| GET | https://samuelwngundi.pythonanywhere.com/api/user_id | To retrieve details of a person by their user ID |
-| PUT | https://samuelwngundi.pythonanywhere.com/api/user_id | To edit the details of a person by their user ID |
-| DELETE | https://samuelwngundi.pythonanywhere.com/api/user_id | To delete details of a person by their user ID |
-### Technologies Used
-* [Flask](https://flask.palletsprojects.com/en/2.3.x/) Flask is a web application framework written in Python. 
-* [MySQL](https://www.mysql.com) MySQL is a relational database management system.
+
+### Installation
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/SamuelNgundi/HNGX-Stage_Two
+cd HNGX-Stage_Two
+```
+
+### 2. Create and Activate a Virtual Environment
+
+```bash
+# Create a virtual environment
+python3 -m venv .venv
+```
+
+```bash
+# Activate the virtual environment
+source .venv/bin/activate # Linux/Mac
+.venv\Scripts\activate # Windows
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+
+### 4. Run the App
+
+```bash
+python app.py
+```
+
+The API should now be running locally at 
+```bash
+http://localhost:5000/api/
+```
+
+
+
+##[DOCUMENTATION.md](DOCUMENTATION.md) file
+## Live URL: [link](https://samuelwngundi.pythonanywhere.com/api)
 
 ### Authors
 * [Samuel Ngundi](https://github.com/SamuelNgundi)
